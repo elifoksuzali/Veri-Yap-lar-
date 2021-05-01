@@ -1,0 +1,75 @@
+#include<stdlib.h>
+#include<stdio.h> 
+void merge(int liste[], int sol, int ortasi, int sag)
+{
+    int i, j, k;
+    int sol1 = ortasi - sol + 1; 
+    int sag2 =  sag - ortasi; 
+    int L[sol1], R[sag2];
+    for (i = 0; i < sol1; i++)
+        L[i] = liste[sol + i];
+    for (j = 0; j < sag2; j++)
+        R[j] = liste[ortasi + 1+ j];
+    i = 0;
+    j = 0;
+    k = sol;
+    while (i < sol1 && j < sag2)
+    {
+        if (L[i] <= R[j])
+        {
+            liste[k] = L[i];
+            i++;
+        }
+        else
+        {
+            liste[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < sol1)
+    {
+        liste[k] = L[i];
+        i++;
+        k++;
+    } 
+    while (j < sag2)
+    {
+        liste[k] = R[j];
+        j++;
+        k++;
+    }
+
+}
+void mergeSort(int liste[], int sol, int sag)
+{
+    if (sol < sag)
+    { 
+        int ortasi= sol+(sag-sol)/2;
+        mergeSort(liste, sol, ortasi);
+        mergeSort(liste, ortasi+1, sag);        
+        merge(liste, sol, ortasi, sag);
+    }
+} 
+int main()
+{
+ FILE *dosyaya_yaz;
+ dosyaya_yaz= fopen("kaynak.txt","w");
+    int liste[10] ;
+    printf("Lüften 10 tane sayı giriniz:");
+    fprintf(dosyaya_yaz," SIRALANMAMIŞ HALİ: ");
+    for(int i=0;i<10;i++){
+      scanf("%d",&liste[i]);
+      
+      fprintf(dosyaya_yaz, "%d", liste[i]);
+      fputs(" ", dosyaya_yaz);
+    }
+    mergeSort(liste, 0, 9);
+    fputs("\n",dosyaya_yaz );
+    fprintf(dosyaya_yaz,"SIRALANMIŞ HALİ: ");
+    for(int i=0;i<10;i++){
+      fprintf(dosyaya_yaz, "%d", liste[i]);
+      fputs(" ", dosyaya_yaz);
+    }
+    return 0;
+}
